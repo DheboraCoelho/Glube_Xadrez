@@ -12,12 +12,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.glubexadrez.ui.theme.GlubeXadrezTheme
+import com.google.firebase.Firebase
 
 class MainActivity : ComponentActivity() {
+    val firebaseApp = Firebase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+
             GlubeXadrezTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
@@ -25,18 +29,24 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
+
             }
         }
+
+
     }
 }
 
 @Composable
+
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
         text = "Hello $name!",
         modifier = modifier
     )
+
 }
+
 
 @Preview(showBackground = true)
 @Composable
