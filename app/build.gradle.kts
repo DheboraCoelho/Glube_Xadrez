@@ -7,8 +7,16 @@ plugins {
 
 android {
     namespace = "com.example.glubexadrez"
-    compileSdk {
-        version = release(36)
+    compileSdk = 36
+
+    defaultConfig {
+        applicationId = "com.example.glubexadrez"
+        minSdk = 24
+        targetSdk = 36
+        versionCode = 1
+        versionName = "1.0"
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     defaultConfig {
