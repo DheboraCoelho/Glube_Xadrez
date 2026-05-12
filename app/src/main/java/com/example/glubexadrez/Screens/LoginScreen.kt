@@ -1,5 +1,7 @@
 package com.example.glubexadrez.Screens
 
+
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -16,25 +18,24 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.glubexadrez.R
 import com.example.glubexadrez.repository.AuthRepository
-import androidx.compose.ui.text.input.VisualTransformation
 
 @Composable
-fun Cadastro(
-    onBackClick: () -> Unit
+fun LoginScreen(
+    onBackClick: () -> Unit,
+    onLoginSuccess: () -> Unit
 ) {
 
     val repository = AuthRepository()
 
-    var nome by remember { mutableStateOf("") }
-    var sobrenome by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
     var message by remember { mutableStateOf("") }
+
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -54,14 +55,14 @@ fun Cadastro(
                 .padding(24.dp)
         ) {
 
-            // SETA VOLTAR
+            // SETA
             IconButton(
                 onClick = onBackClick
             ) {
 
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Voltar",
+                    contentDescription = null,
                     tint = Color(0xFF6A2C91),
                     modifier = Modifier.size(32.dp)
                 )
@@ -77,56 +78,51 @@ fun Cadastro(
 
                 Image(
                     painter = painterResource(id = R.drawable.logo),
-                    contentDescription = "Logo",
+                    contentDescription = null,
                     modifier = Modifier.size(150.dp)
                 )
             }
 
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(40.dp))
 
-            CampoTexto("NOME:")
-            CampoInput(
-                value = nome,
-                onValueChange = { nome = it }
-            )
+            CampoTexto("INSIRA USUÁRIO:")
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            CampoTexto("SOBRENOME:")
-            CampoInput(
-                value = sobrenome,
-                onValueChange = { sobrenome = it }
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            CampoTexto("EMAIL:")
             CampoInput(
                 value = email,
-                onValueChange = { email = it }
+                onValueChange = {
+                    email = it
+                }
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
-            CampoTexto("SENHA:")
+            CampoTexto("INSIRA SENHA:")
+
             CampoInput(
                 value = senha,
-                onValueChange = { senha = it },
+                onValueChange = {
+                    senha = it
+                },
                 isPassword = true
             )
 
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(60.dp))
 
             Button(
                 onClick = {
 
-                    repository.register(
-                        nome,
-                        sobrenome,
+                    repository.login(
                         email,
                         senha
                     ) {
+
                         message = it
+
+                        if (it == "Login realizado com sucesso!") {
+
+                            onLoginSuccess()
+
+                        }
                     }
 
                 },
@@ -140,77 +136,19 @@ fun Cadastro(
             ) {
 
                 Text(
-                    text = "CADASTRAR",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
+                    text = "ENTRAR",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             Text(
                 text = message,
-                fontSize = 16.sp,
-                color = Color.Red
+                color = Color.Red,
+                fontSize = 16.sp
             )
         }
     }
-}
-
-@Composable
-fun CampoTexto(texto: String) {
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(40.dp)
-            .clip(RoundedCornerShape(50))
-            .background(Color(0xFF7B2E83)),
-        contentAlignment = Alignment.Center
-    ) {
-
-        Text(
-            text = texto,
-            color = Color.White,
-            fontWeight = FontWeight.Bold
-        )
-    }
-}
-
-@Composable
-fun CampoInput(
-    value: String,
-    onValueChange: (String) -> Unit,
-    isPassword: Boolean = false
-) {
-
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        visualTransformation = if (isPassword)
-            PasswordVisualTransformation()
-        else
-            VisualTransformation.None,
-
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(50)),
-
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedContainerColor = Color(0xFFECE7D2),
-            unfocusedContainerColor = Color(0xFFECE7D2),
-            focusedBorderColor = Color.Transparent,
-            unfocusedBorderColor = Color.Transparent
-        ),
-
-        singleLine = true
-    )
-}
-@Preview(showBackground = true)
-@Composable
-fun CadastroPreview() {
-
-    Cadastro(
-        onBackClick = {}
-    )
 }

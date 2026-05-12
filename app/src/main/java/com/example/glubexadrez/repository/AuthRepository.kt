@@ -18,4 +18,14 @@ class AuthRepository {
         datasource.register(nome, sobrenome, email, senha, message)
     }
 
+    fun login(
+        email: String,
+        senha: String,
+        message: (String) -> Unit
+    ) {
+
+        datasource.login(email, senha, message)
+
+    }
+
 }

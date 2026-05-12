@@ -56,4 +56,29 @@ class Auth {
                 }
             }
     }
+    fun login(
+        email: String,
+        senha: String,
+        message: (String) -> Unit
+    ) {
+
+        if (email.isEmpty() || senha.isEmpty()) {
+
+            message("Preencha todos os campos!")
+            return
+        }
+
+        auth.signInWithEmailAndPassword(email, senha)
+            .addOnCompleteListener { result ->
+
+                if (result.isSuccessful) {
+
+                    message("Login realizado com sucesso!")
+
+                } else {
+
+                    message("Email ou senha inválidos!")
+                }
+            }
+    }
 }
